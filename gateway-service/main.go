@@ -9,9 +9,22 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"go.uber.org/zap"
+
+	_ "gateway-service/docs"
 )
 
+// @title Delivery Management API Gateway
+// @version 1.0
+// @description API Gateway for Delivery Management System
+// @host localhost:8080
+// @BasePath /api/v1
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
+// @description Enter your bearer token in the format **Bearer + token**
 var (
 	userServiceURL     = os.Getenv("USER_SERVICE_URL")
 	orderServiceURL    = os.Getenv("ORDER_SERVICE_URL")
@@ -31,11 +44,19 @@ func init() {
 func main() {
 	r := gin.Default()
 
-	// Routes don't need authentication
-	r.Any("/api/v1/users/login", forwardToService(userServiceURL))
-	r.Any("/api/v1/users/register", forwardToService(userServiceURL))
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	// Routes need authentication
+	r.GET("/health-check", func(c *gin.Context) {
+		c.JSON(200, gin.H{"message": "ok"})
+	})
+
+	r.POST("/api/v1/users/login", func(c *gin.Context) {
+		forwardToService(userServiceURL)(c)
+	})
+
+	r.POST("/api/v1/users/register", func(c *gin.Context) {
+		forwardToService(userServiceURL)(c)
+	})
 
 	authorized := r.Group("/api/v1")
 	authorized.Use(authMiddleware())

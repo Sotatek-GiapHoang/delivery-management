@@ -33,16 +33,26 @@ This project is a microservices-based delivery management system built with Go, 
    docker-compose up -d
    ```
 
-4. The services should now be running:
-   - Gateway Service: http://localhost:8080
-   - Order Service: http://localhost:8081
-   - Delivery Service: http://localhost:8082
-   - User Service: http://localhost:8083
-   - Notification Service: http://localhost:8084
+4. API Gateway will run at `http://localhost:8080`
 
 ## API Documentation
 
-(Add information about your API endpoints, request/response formats, etc.)
+The documentation is available at `http://localhost:8080/swagger/index.html` when the server is running.
+
+## Authentication
+
+API use authentication with Bearer Token. To authenticate a request, add the `Authorization` header with the value as the JWT token:
+
+```
+Authorization: Bearer <token>
+```
+## Endpoints
+
+- `/api/v1/users/*`: User service endpoints
+- `/api/v1/orders/*`: Order service endpoints
+- `/api/v1/deliveries/*`: Delivery service endpoints
+
+The detail of each endpoint is in the swagger documentation.
 
 ## Development
 
@@ -55,7 +65,7 @@ To run a specific service locally:
 
 2. Install dependencies:
    ```
-   go mod download
+   go mod tidy
    ```
 
 3. Run the service:

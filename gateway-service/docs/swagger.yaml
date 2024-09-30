@@ -1,0 +1,243 @@
+basePath: /api/v1
+host: localhost:8080
+info:
+  contact: {}
+  description: API Gateway for Delivery Management System
+  title: Delivery Management API Gateway
+  version: "1.0"
+paths:
+  /deliveries:
+    get:
+      consumes:
+      - application/json
+      description: Get the list of deliveries for the current user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: object
+            type: array
+      security:
+      - BearerAuth: []
+      summary: Get deliveries by user
+      tags:
+      - deliveries
+  /deliveries/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get detailed information of a delivery
+      parameters:
+      - description: ID of the delivery
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get delivery information
+      tags:
+      - deliveries
+    put:
+      consumes:
+      - application/json
+      description: Update the status of a delivery
+      parameters:
+      - description: ID of the delivery
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: New status
+        in: body
+        name: status
+        required: true
+        schema:
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Update delivery status
+      tags:
+      - deliveries
+  /orders:
+    get:
+      consumes:
+      - application/json
+      description: Get the list of orders for the current user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: object
+            type: array
+      security:
+      - BearerAuth: []
+      summary: Get user orders
+      tags:
+      - orders
+    post:
+      consumes:
+      - application/json
+      description: Create a new order
+      parameters:
+      - description: Order information
+        in: body
+        name: order
+        required: true
+        schema:
+          type: object
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Create an order
+      tags:
+      - orders
+  /orders/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get detailed information of an order
+      parameters:
+      - description: ID of the order
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get order information
+      tags:
+      - orders
+    put:
+      consumes:
+      - application/json
+      description: Update the status of an order
+      parameters:
+      - description: ID of the order
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: New status
+        in: body
+        name: status
+        required: true
+        schema:
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Update order status
+      tags:
+      - orders
+  /users:
+    get:
+      consumes:
+      - application/json
+      description: Get detailed information of the current user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get user information
+      tags:
+      - users
+  /users/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user and return token
+      parameters:
+      - description: Login information
+        in: body
+        name: user
+        required: true
+        schema:
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+      summary: Login user
+      tags:
+      - users
+  /users/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user in the system
+      parameters:
+      - description: User Registration Info
+        in: body
+        name: user
+        required: true
+        schema:
+          type: object
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+      summary: Create a new user
+      tags:
+      - users
+securityDefinitions:
+  BearerAuth:
+    description: Enter your bearer token in the format **Bearer + token**
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
